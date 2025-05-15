@@ -9,13 +9,15 @@ public class DoorTrigger : MonoBehaviour
 
     void Start()
     {
-        uiPrompt.SetActive(false);
+        if (uiPrompt != null)
+            uiPrompt.SetActive(false);
     }
 
     void Update()
     {
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerNear && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)))
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(sceneToLoad);
         }
     }
@@ -24,7 +26,9 @@ public class DoorTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            uiPrompt.SetActive(true);
+            if (uiPrompt != null)
+                uiPrompt.SetActive(true);
+
             isPlayerNear = true;
         }
     }
@@ -33,7 +37,9 @@ public class DoorTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            uiPrompt.SetActive(false);
+            if (uiPrompt != null)
+                uiPrompt.SetActive(false);
+
             isPlayerNear = false;
         }
     }

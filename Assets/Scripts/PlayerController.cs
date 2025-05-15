@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Update input direction
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
         inputDirection = (orientation.forward * vertical + orientation.right * horizontal).normalized;
 
-        // Update move direction if not charging
+
         if (isGrounded && !isCharging)
         {
             moveDirection = inputDirection;
@@ -49,20 +49,19 @@ public class PlayerController : MonoBehaviour
             moveDirection = Vector3.zero;
         }
 
-        // Set walking animation
+
         bool isWalking = moveDirection != Vector3.zero && isGrounded && !isCharging;
         animator.SetBool("isWalking", isWalking);
 
-        // Start charging jump
         if (allowJump && Input.GetKey(KeyCode.Space) && isGrounded)
         {
             if (!isCharging)
             {
                 isCharging = true;
-                animator.ResetTrigger("isLanding"); // stop landing animation
-                animator.SetTrigger("isJumping");   // start jump animation
+                animator.ResetTrigger("isLanding");
+                animator.SetTrigger("isJumping"); 
 
-                // Stop movement on charge start
+
                 Vector3 stopHorizontal = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
                 rb.linearVelocity -= stopHorizontal;
             }
@@ -71,7 +70,7 @@ public class PlayerController : MonoBehaviour
             charge = Mathf.Clamp(charge, 0f, maxCharge);
         }
 
-        // Release jump
+
         if (allowJump && Input.GetKeyUp(KeyCode.Space) && isCharging && isGrounded)
         {
             Vector3 jumpDirection = (Vector3.up + inputDirection).normalized;
@@ -111,7 +110,6 @@ public class PlayerController : MonoBehaviour
             {
                 isGrounded = true;
 
-                // Trigger landing animation
                 animator.SetTrigger("isLanding");
                 return;
             }
